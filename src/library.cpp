@@ -712,14 +712,21 @@ double lammps_get_thermo(void *ptr, char *name)
    useful before call to lammps_get_atoms() so can pre-allocate vector
 ------------------------------------------------------------------------- */
 
+#ifdef LAMMPS_SMALLSMALL
 int lammps_get_natoms(void *ptr)
 {
   LAMMPS *lmp = (LAMMPS *) ptr;
 
-  if (lmp->atom->natoms > MAXSMALLINT) return 0;
-  int natoms = static_cast<int> (lmp->atom->natoms);
-  return natoms;
+  return lmp->atom->natoms;
 }
+#else
+int64_t lammps_get_natoms(void *ptr)
+{
+  LAMMPS *lmp = (LAMMPS *) ptr;
+
+  return lmp->atom->natoms;
+}
+#else
 
 /* ----------------------------------------------------------------------
    set the value of a STRING variable to str

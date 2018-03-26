@@ -17,6 +17,7 @@
 */
 
 #include <mpi.h>
+#include <stdint.h> // for int64_t
 
 /* ifdefs allow this file to be included in a C program */
 
@@ -44,7 +45,12 @@ void *lammps_extract_fix(void *, char *, int, int, int, int);
 void *lammps_extract_variable(void *, char *, char *);
 
 double lammps_get_thermo(void *, char *);
+
+#ifdef LAMMPS_SMALLSMALL
 int lammps_get_natoms(void *);
+#else
+int64_t lammps_get_natoms(void *);
+#endif
 
 int lammps_set_variable(void *, char *, char *);
 void lammps_reset_box(void *, double *, double *, double, double, double);
